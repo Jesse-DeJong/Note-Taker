@@ -48,7 +48,7 @@ app.post('/api/notes', (req, res) => {
     // Call a function to append the new data
     updateJSONdb(currentFile);
   });
-  
+    
   // Push the new data into the array from the db JSON file
   function updateJSONdb (currentFile) {
     req.body.id = uuidv4(); 
@@ -62,7 +62,8 @@ app.post('/api/notes', (req, res) => {
     `Successfully updated file with Title ${req.body.title} and Text ${req.body.text}`)
     );
   };
-
+  // Return a successful response to the client
+  res.status(201).send(`Successfully updated file with Title ${req.body.title} and Text ${req.body.text}`);
 });
 
 // Open port
