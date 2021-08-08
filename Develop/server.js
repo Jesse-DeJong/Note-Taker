@@ -1,5 +1,6 @@
 // Import Dependencies
 const fs = require('fs');
+const { v4: uuidv4 } = require('uuid');
 const express = require('express');
 const path = require('path');
 
@@ -27,9 +28,12 @@ app.get('/notes', (req, res) =>
 /* API Routes */
 // GET Route for /api/notes
 app.get('/api/notes', (req, res) => {
-  fs.readFile(path.join(__dirname, '/db/db.json'), (error, data) =>
-  error ? console.error(error) : res.json(JSON.parse(data))
-  );
+
+
+    fs.readFile(path.join(__dirname, '/db/db.json'), (error, data) =>
+    error ? console.error(error) : res.json(JSON.parse(data)));
+
+
 });
 
 // POST Route for /api/notes
@@ -47,13 +51,15 @@ app.post('/api/notes', (req, res) => {
   
   // Push the new data into the array from the db JSON file
   function updateJSONdb (currentFile) {
+    req.body.id = uuidv4(); 
     currentFile.push(req.body);
     // Stringify the object to be written back to the file
     const stringCurrentFile = JSON.stringify(currentFile);
 
     // Write the updated and stringified file back to db.json
     fs.writeFile(path.join(__dirname, '/db/db.json'), stringCurrentFile, (err) =>
-    err ? console.error(err) : console.log(`Successfully updated file with Title ${req.body.title} and Text ${req.body.text}`)
+    err ? console.error(err) : console.log(
+    `Successfully updated file with Title ${req.body.title} and Text ${req.body.text}`)
     );
   };
 
